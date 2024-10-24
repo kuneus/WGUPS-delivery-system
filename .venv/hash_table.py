@@ -47,16 +47,3 @@ class HashTable:
 
     def print_table(self):
         print(self.table)
-
-
-exampleTable = HashTable()
-exampleTable.insert('Hello', 'World')
-exampleTable.insert('Hello', 'There')
-exampleTable.insert('Good', 'Bye')
-exampleTable.insert('test delete', 'This')
-print('Before delete: ')
-exampleTable.print_table()
-exampleTable.hash_remove('test delete')
-print('After delete:')
-exampleTable.print_table()
-print(exampleTable.search('Hello'))
