@@ -1,5 +1,3 @@
-#define hash table here
-#TODO: create hash table
 class HashTable:
     # constructor with default initial capacity set at 20
     def __init__(self, initial_capacity=20):
@@ -36,14 +34,13 @@ class HashTable:
 
         return None
 
-    #TODO: remove method
+    # remove method an item using a key
     def hash_remove(self,key):
         bucket_list = self.__create_bucket_list(key)
 
         for kv in bucket_list:
                 if kv[0] == key:
                     bucket_list.remove(kv)
-                    print('bucket has been removed')
 
     def print_table(self):
         print(self.table)
