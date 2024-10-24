@@ -1,11 +1,7 @@
 #create package class
 import csv
-from hash_table import HashTable
-
-hash_table = HashTable()
 
 class Package:
-
     def __init__(self, package_id, address, city, state, zipcode, due, notes, status):
         self.package_id = package_id
         self.address = address
@@ -19,8 +15,8 @@ class Package:
     def __str__(self):
         return "%s, %s, %s, %s, %s, %s, %s, %s" % (self.package_id, self.address, self.city, self.state, self.zipcode, self.due, self.notes, self.status)
 
-
-def load_package_data(file):
+# load packages csv data, create package object, and insert into hash table
+def load_package_data(file, table):
     with open(file) as csv_file:
         reader = csv.reader(csv_file, delimiter=",")
         for package in reader:
@@ -34,7 +30,6 @@ def load_package_data(file):
             status = "Loaded"
 
             package_object = Package(package_id, package_address, package_city, package_state, package_zipcode, package_due, package_notes, status)
-            hash_table.insert(package_id, package_object)
+            table.insert(package_id, package_object)
 
-packages = './csv/wgups-packages.csv'
-load_package_data(packages)
+
