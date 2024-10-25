@@ -30,6 +30,9 @@ class HashTable:
 
         for kv in bucket_list:
             if kv[0] == key:
+                # move most recently searched item to the front
+                bucket_list.remove(kv)
+                bucket_list.insert(0,kv)
                 return kv[1]
 
         return None
