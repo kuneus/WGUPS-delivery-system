@@ -15,11 +15,13 @@ class HashTable:
     def insert(self, key, item):
         bucket_list = self.__create_bucket_list(key)
 
+        # check if item already exists and update it if found
         for kv in bucket_list:
             if kv[0] == key:
                 kv[1] = item
                 return True
 
+        # else insert item
         key_item = [key,item]
         bucket_list.append(key_item)
         return True
@@ -34,10 +36,9 @@ class HashTable:
                 bucket_list.remove(kv)
                 bucket_list.insert(0,kv)
                 return kv[1]
-
         return None
 
-    # remove method an item using a key
+    # remove an item using a key
     def hash_remove(self,key):
         bucket_list = self.__create_bucket_list(key)
 
@@ -47,3 +48,7 @@ class HashTable:
 
     def print_table(self):
         print(self.table)
+        # for bucket_list in self.table:
+        #     for bucket in bucket_list:
+        #         # print details of each package
+        #         print('Package ID: %s | address: %s | city: %s | state: %s | zipcode: %s | due: %s | weight: %s | notes: %s | status: %s' % (bucket[1].package_id, bucket[1].address, bucket[1].city, bucket[1].state, bucket[1].zipcode, bucket[1].due, bucket[1].weight, bucket[1].notes, bucket[1].status))
