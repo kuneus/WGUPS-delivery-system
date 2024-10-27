@@ -29,7 +29,7 @@ def load_package_data(file, table):
             package_due = package[5]
             package_weight = package[6]
             package_notes = package[7]
-            status = "Loaded"
+            status = "en route"
 
             package_object = Package(package_id, package_address, package_city, package_state, package_zipcode, package_due, package_weight, package_notes, status)
             table.insert(package_id, package_object)
