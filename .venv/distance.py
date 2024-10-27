@@ -23,13 +23,11 @@ def load_distance_data(file, table):
             index+=1
 
 
-# find the distance between 2 addresses
-# def find_distance(start, destination):
+# find the distance between 2 addresses using their indexes as input
+def find_distance(start_index, destination_index):
+    distance = distance_data[destination_index][start_index + 1]
+    if distance == '':
+        # switch indexes if empty cell
+        distance = distance_data[start_index][destination_index + 1]
+    return distance
 
-address_table = HashTable()
-load_distance_data('./csv/wgpus-distances.csv', address_table)
-
-for i in range (len(distance_data)):
-    print(distance_data[i])
-
-print(distance_data)
