@@ -27,7 +27,7 @@ class HashTable:
         return True
 
     # search for an item using a key and return the item if found, or None if not found
-    def search(self,key):
+    def lookup(self,key):
         bucket_list = self.__create_bucket_list(key)
 
         for kv in bucket_list:
