@@ -24,7 +24,7 @@ class Package:
 
 # load packages csv data, create package object, and insert into hash table
 def load_package_data(file, table):
-    with open(file) as csv_file:
+    with open(file, encoding='utf-8-sig') as csv_file:
         reader = csv.reader(csv_file, delimiter=",")
         for package in reader:
             package_id = package[0]
