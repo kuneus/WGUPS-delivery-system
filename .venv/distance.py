@@ -2,6 +2,7 @@ import csv
 from hash_table import HashTable
 
 distance_data = []
+address_hash_table = HashTable()
 
 # load distance data
 def load_distance_data(file, table):
@@ -25,26 +26,31 @@ def load_distance_data(file, table):
 
 # find the distance between 2 addresses using their indexes as input
 def find_distance(start_index, destination_index):
+    # use indexes to locate in 2d list of distance data
     distance = distance_data[destination_index][start_index + 1]
+
     if distance == '':
         # switch indexes if empty cell
         distance = distance_data[start_index][destination_index + 1]
     return distance
 
-# find the shortest distance between input address and all other addresses
-def find_min_distance(start_address_index):
+# find the shortest distance between input address and remaining packages
+def find_min_distance(start_address_index, remaining_packages):
     shortest_distance = 100000.0
     destination_address_index = 0
 
     # loop through each address and record minimum distance
-    for i in range(len(distance_data)):
-        current_distance = find_distance(start_address_index, i)
+    for package in remaining_packages:
+        package_index = address_hash_table.lookup(package.address)
+
+        # check for package with address error
+        if package_index is None:
+            continue
+
+        current_distance = find_distance(start_address_index, package_index)
         # compare current shortest distance with current distance
         # must be greater than zero to avoid returning same address
         if float(shortest_distance) > float(current_distance) > 0.0:
             shortest_distance = current_distance
-            destination_address_index = i
+            destination_address_index = package_index
     return destination_address_index
-
-# NOTE:  above function should have input parameter of list of available
-# addresses to search from instead of searching the entire list
