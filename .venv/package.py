@@ -1,5 +1,11 @@
 #create package class
 import csv
+from hash_table import HashTable
+
+# create package list to keep track of packages
+package_list = []
+# package hash table for accessing package information
+package_hash_table = HashTable()
 
 class Package:
     def __init__(self, package_id, address, city, state, zipcode, due, weight, notes, status):
@@ -33,5 +39,6 @@ def load_package_data(file, table):
 
             package_object = Package(package_id, package_address, package_city, package_state, package_zipcode, package_due, package_weight, package_notes, status)
             table.insert(package_id, package_object)
+            package_list.append(package_object)
 
 
