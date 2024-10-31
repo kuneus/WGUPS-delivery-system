@@ -3,8 +3,9 @@
 
 import csv
 from package import *
-from hash_table import HashTable # remove after testing
+from trucks import *
 from distance import *
+from nearest_neighbor import *
 
 # load packages data
 load_package_data('./csv/wgups-packages.csv', package_hash_table)
@@ -12,7 +13,17 @@ load_package_data('./csv/wgups-packages.csv', package_hash_table)
 # load distance data
 load_distance_data('./csv/wgpus-distances.csv', address_hash_table)
 
-# test address data and functions
-address_1 = address_hash_table.lookup('4001 South 700 East')
-closest_neighbor_test_2 = str(find_min_distance(address_1, package_list))
-print('index of closest address using method 2: ' + closest_neighbor_test_2)
+# instantiate trucks
+# truck_1 = Truck()
+
+# test nearest neighbor algorithm
+final_route = create_route(package_list)
+route_1 = final_route[:16]
+route_2 = final_route[16:32]
+route_3 = final_route[32:]
+
+
+new_route_1 = create_route(route_1)
+new_route_2 = create_route(route_2)
+new_route_3 = create_route(route_3)
+
