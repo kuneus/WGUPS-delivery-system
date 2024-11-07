@@ -44,17 +44,12 @@ def find_min_distance(start_address_index, remaining_packages):
         # use package index from address hash table to find its distance in distance data list
         package_index = address_hash_table.lookup(remaining_packages[i].address)
 
-        # check for package with address error
-        if package_index is None:
-            remaining_packages[i].address = '410 S State St'
-            package_index = address_hash_table.lookup(remaining_packages[i].address)
-            # continue
-
         current_distance = find_distance(start_address_index, package_index)
         # compare current shortest distance with current distance
-        # must be greater than zero to avoid returning same address
-        if float(shortest_distance) > float(current_distance) > 0.0:
+        if float(shortest_distance) > float(current_distance):
             shortest_distance = current_distance
             destination_address_index = i
+
+    miles = shortest_distance
     # return the index from the remaining packages list
-    return destination_address_index
+    return [destination_address_index, miles]
