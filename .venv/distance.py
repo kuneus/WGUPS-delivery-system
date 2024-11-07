@@ -50,6 +50,5 @@ def find_min_distance(start_address_index, remaining_packages):
             shortest_distance = current_distance
             destination_address_index = i
 
-    miles = shortest_distance
     # return the index from the remaining packages list
-    return [destination_address_index, miles]
+    return [destination_address_index, shortest_distance]
