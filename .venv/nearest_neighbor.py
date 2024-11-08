@@ -83,7 +83,8 @@ def create_route(packages, trucks):
             ## END DELIVERY WHILE LOOP ##
 
         # return truck to hub
-        truck.return_to_hub()
+        if truck.truck_id == '1':
+            truck.return_to_hub()
         ## END TRUCK FOR LOOP ##
 
 # about each route list:
