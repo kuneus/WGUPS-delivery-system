@@ -31,7 +31,8 @@ def calculate_package_status(truck_obj, pkg_obj, time_input):
         pkg_obj.status = 'At hub'
     return pkg_obj.status
 
-def display_all_packages(trucks, time_input):
+# display status of all packages in each truck
+def display_all_statuses(trucks, time_input):
     time_str = time_input.strftime('%I:%M %p')
     for truck in trucks:
         print('--------------------- Truck %s Status Info at %s---------------------' % (truck.truck_id, time_str))
@@ -44,6 +45,15 @@ def display_all_packages(trucks, time_input):
                 id_str = '0' + pkg.package_id
             print('%s ------------- %s' % (id_str, calculate_package_status(truck, pkg, time_input)))
 
+# find miles for each truck and calculate and display all miles
+def display_all_mileage(trucks):
+    total_miles = 0
+    print('Truck ID ----- Miles')
+    for truck in trucks:
+        total_miles += round(truck.miles, 2)
+        print('%s ------------ %.1f' % (truck.truck_id, truck.miles))
+    print('Total miles: %.1f' % total_miles)
+
 
 def user_interface( trucks):
     # welcome message
@@ -51,9 +61,12 @@ def user_interface( trucks):
     print('------------------     Welcome to WGUPS!     ------------------')
     print('---------------------------------------------------------------')
 
-    response = input("Type '1' to view the status of a specific package, '2' to view the status of all packages, or 'q' to quit the program:  ")
-
-    while response != 'q':
+    while True:
+        response = input("Please input one of the following options: \n"
+                         " '1' to view the status of a specific package, \n "
+                         "'2' to view the status of all packages, \n"
+                         " '3' to view total miles by all trucks, \n"
+                         "  or 'q' to quit the program:  ")
         if response == '1':
             # run do-while loop until user inputs valid package ID
             print('Please input the package ID: ')
@@ -68,7 +81,6 @@ def user_interface( trucks):
             # find which truck the package will be delivered in
             pkg_truck_id = pkg_obj.truck_id
             truck_obj = truck_hash_table.lookup(pkg_truck_id)
-            print('Package will be delivered in Truck %s' % truck_obj.truck_id)
 
             # run do-while loop until user inputs valid time format
             while True:
@@ -80,9 +92,6 @@ def user_interface( trucks):
                     break
                 else:
                     print('Invalid time format.')
-
-            print('Package ID: %s, address: %s, delivered at: %s, status: %s' % (
-                pkg_obj.package_id, pkg_obj.address, pkg_obj.delivered_at, pkg_obj.status))
 
             status = calculate_package_status(truck_obj,pkg_obj,current_time_obj)
             time_str = current_time_obj.strftime('%I:%M %p')
@@ -98,14 +107,16 @@ def user_interface( trucks):
                     break
                 else:
                     print('Invalid time format.')
-
-            display_all_packages(trucks, current_time_obj)
-
+            # display status of all packages in each truck
+            display_all_statuses(trucks, current_time_obj)
+        elif response == '3':
+            # display mileage of each truck and total mileage
+            display_all_mileage(trucks)
+        elif response == 'q':
+            # break loop and quit program
+            break
         else:
-            print('Invalid input. Please put 1, 2, or q only.')
-            response = input()
-            continue
-        print('Request complete. Press 1 or 2 to resume search or q to quit program.')
-        response = input()
-
+            print('Invalid input. Try again.')
+        print('---------------------------------------------------------------')
+        # END WHILE LOOP
     print('Exiting program')
