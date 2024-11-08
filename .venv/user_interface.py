@@ -1,5 +1,6 @@
 from load_truck import time_obj
 from datetime import datetime
+from package import package_hash_table
 
 # user must be able to
 # 1. view the delivery status of any package at any time
@@ -19,10 +20,31 @@ def validate_time(time_str, time_format):
     except ValueError:
         return False
 
-# view delivery status function
-# - input parameter: time
-# - return status of specific or total packages and estimated delivery time
-def user_interface(package_hash_table, truck_hash_table):
+# determine status of package
+def calculate_package_status(truck_obj, pkg_obj, time_input):
+    if time_input >= pkg_obj.delivered_at:
+        pkg_obj.status = 'Delivered'
+    elif time_input >= truck_obj.depart_time:
+        pkg_obj.status = 'En route'
+    else:
+        pkg_obj.status = 'At hub'
+    return pkg_obj.status
+
+def display_all_packages(trucks, time_input):
+    time_str = time_input.strftime('%I:%M %p')
+    for truck in trucks:
+        print('--------------------- Truck %s Status Info at %s---------------------' % (truck.truck_id, time_str))
+        # next = get status
+        print('Package ID ----- Status')
+        for pkg in truck.to_deliver:
+            id_str = pkg.package_id
+            # add 0 in front of single digit numbers for consistent spacing
+            if int(pkg.package_id) < 10:
+                id_str = '0' + pkg.package_id
+            print('%s ------------- %s' % (id_str, calculate_package_status(truck, pkg, time_input)))
+
+
+def user_interface( truck_hash_table, trucks):
     # welcome message
     print('---------------------------------------------------------------')
     print('------------------     Welcome to WGUPS!     ------------------')
@@ -61,20 +83,26 @@ def user_interface(package_hash_table, truck_hash_table):
             print('Package ID: %s, address: %s, delivered at: %s, status: %s' % (
                 pkg_obj.package_id, pkg_obj.address, pkg_obj.delivered_at, pkg_obj.status))
 
-            # compare input time to package's delivered at time
-            # if input time greater than package's delivered time, then status = delivered
-            # if less than, status = en route or on hub
-            # to determine if en route, find truck's depart time
-            # if depart time less than input time, status = en route
-            # if depart time greater than input time, status = at hub
-
-            print('At %s, package %s is currently ' % (current_time_obj, package_id))
+            status = calculate_package_status(truck_obj,pkg_obj,current_time_obj)
+            time_str = current_time_obj.strftime('%I:%M %p')
+            print('At %s, package %s status: %s' % (time_str, pkg_obj.package_id, status))
         elif response == '2':
-            print('Input time to view stat®us in HH:MM AM/PM format:  ')
-            time = input()
-            print('Here are all the packages: ')
-            # iterate through each package on each truck
-            # generate status based on input time and delivered at time
+            # print('Input time to view status in HH:MM AM/PM format:  ')
+            # time = input()
+            #
+            # run do-while loop until user inputs valid time format
+            while True:
+                print('Input time to view status in HH:MM AM/PM format:  ')
+                time = input()
+                time_format = '%I:%M %p'
+                if validate_time(time, time_format):
+                    current_time_obj = time_obj(time)
+                    break
+                else:
+                    print('Invalid time format.')
+
+            display_all_packages(trucks, current_time_obj)
+
         else:
             print('Invalid input. Please put 1, 2, or q only.')
             response = input()
