@@ -1,6 +1,7 @@
 from load_truck import time_obj
 from datetime import datetime
 from package import package_hash_table
+from trucks import truck_hash_table
 
 # user must be able to
 # 1. view the delivery status of any package at any time
@@ -44,7 +45,7 @@ def display_all_packages(trucks, time_input):
             print('%s ------------- %s' % (id_str, calculate_package_status(truck, pkg, time_input)))
 
 
-def user_interface( truck_hash_table, trucks):
+def user_interface( trucks):
     # welcome message
     print('---------------------------------------------------------------')
     print('------------------     Welcome to WGUPS!     ------------------')
@@ -87,9 +88,6 @@ def user_interface( truck_hash_table, trucks):
             time_str = current_time_obj.strftime('%I:%M %p')
             print('At %s, package %s status: %s' % (time_str, pkg_obj.package_id, status))
         elif response == '2':
-            # print('Input time to view status in HH:MM AM/PM format:  ')
-            # time = input()
-            #
             # run do-while loop until user inputs valid time format
             while True:
                 print('Input time to view status in HH:MM AM/PM format:  ')

@@ -26,3 +26,4 @@ class Truck:
         self.miles = self.miles + float(find_distance(0, current_address_index))
         self.current_time = calculate_time(self.current_time, float(find_distance(0, current_address_index)), self.speed)
 
+truck_hash_table = HashTable()
