@@ -22,7 +22,7 @@ def validate_time(time_str, time_format):
 # view delivery status function
 # - input parameter: time
 # - return status of specific or total packages and estimated delivery time
-def user_interface(hash_table):
+def user_interface(package_hash_table, truck_hash_table):
     # welcome message
     print('---------------------------------------------------------------')
     print('------------------     Welcome to WGUPS!     ------------------')
@@ -32,17 +32,22 @@ def user_interface(hash_table):
 
     while response != 'q':
         if response == '1':
+            # run do-while loop until user inputs valid package ID
             print('Please input the package ID: ')
-            package_id = input()
+            while True:
+                package_id = input()
+                pkg_obj = package_hash_table.lookup(package_id)
+                if pkg_obj:
+                    break
+                else:
+                    print('Invalid package ID. Please try again with a valid package ID.')
 
-            # need to validate package ID
-            # add while loop until valid input
-            pkg_obj = hash_table.lookup(package_id)
-            print('Package ID: %s, address: %s, delivered at: %s, status: %s' % (pkg_obj.package_id, pkg_obj.address, pkg_obj.delivered_at, pkg_obj.status))
-            # logic for finding the package
-            # find package's truck
-            # then find package in truck
+            # find which truck the package will be delivered in
+            pkg_truck_id = pkg_obj.truck_id
+            truck_obj = truck_hash_table.lookup(pkg_truck_id)
+            print('Package will be delivered in Truck %s' % truck_obj.truck_id)
 
+            # run do-while loop until user inputs valid time format
             while True:
                 print('Input time to view status in HH:MM AM/PM format:  ')
                 time = input()
@@ -53,7 +58,8 @@ def user_interface(hash_table):
                 else:
                     print('Invalid time format.')
 
-
+            print('Package ID: %s, address: %s, delivered at: %s, status: %s' % (
+                pkg_obj.package_id, pkg_obj.address, pkg_obj.delivered_at, pkg_obj.status))
 
             # compare input time to package's delivered at time
             # if input time greater than package's delivered time, then status = delivered
