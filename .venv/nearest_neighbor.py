@@ -2,12 +2,6 @@ from distance import *
 from package import *
 from datetime import datetime, timedelta
 
-# truck variables that need to be updated during delivery:
-# - package status
-# - current time
-# - delivered and to deliver
-# - mileage
-
 # calculate time based on miles driven
 def calculate_time(current_time, miles, mph):
     miles_to_hours = float(miles / mph)
@@ -19,7 +13,9 @@ def time_obj(time):
     return datetime.strptime(time, '%I:%M %p')
 
 def create_route(packages, trucks):
+    # list to hold remaining packages to be delivered
     remaining_packages = packages
+    # list to hold wrong package(s)
     wrong_address_packages = []
 
     # iterate through each truck and create its route
@@ -86,34 +82,6 @@ def create_route(packages, trucks):
         if truck.truck_id == '1':
             truck.return_to_hub()
         ## END TRUCK FOR LOOP ##
-
-# about each route list:
-# order of the list determines order of deliveries
-# the list contains the package objects
-# can find the time of delivery by finding its index in the list,
-# then sum up the distances up to that delivery,
-# then divide the total distance driven by 18 mph
-
-# ASSUMPTIONS:
-#     truck capacity of 16
-#     average speed 18mph
-#     earliest time to leave 8am
-#
-#
-# CONSTRAINT CONDITIONALS LOGICAL PRIORITY:
-#     1. Check if package must be delivered on truck 2
-#     2. Check if package needs to be delivered with others in same truck
-#     3. Check if package has priority deadline
-#     4. Check if package is delayed
-#
-# CONSTRAINTS SUMMARY:
-#     Package pairs: (14, 15, 19) , (13, 16, 19) , ( 13, 15, 20)
-#     Delayed packages: (6, 9:05am), (9, 10:20am), (25, 9:05am), (27, 9:05am) , (32, 9:05am)
-#     Package truck 2 only: 3, 18, 36, 38
-#     Deadlines:
-#         9:00am : [15]
-#         10:30 am : [1, 6, 13, 14, 16, 20, 25, 29, 30, 31, 34, 37, 40]
-#         EOD
 
 
 
