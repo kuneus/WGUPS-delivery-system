@@ -48,7 +48,3 @@ class HashTable:
 
     def print_table(self):
         print(self.table)
-        # for bucket_list in self.table:
-        #     for bucket in bucket_list:
-        #         # print details of each package
-        #         print('Package ID: %s | address: %s | city: %s | state: %s | zipcode: %s | due: %s | weight: %s | notes: %s | status: %s' % (bucket[1].package_id, bucket[1].address, bucket[1].city, bucket[1].state, bucket[1].zipcode, bucket[1].due, bucket[1].weight, bucket[1].notes, bucket[1].status))
