@@ -67,6 +67,21 @@ def user_interface( trucks):
                          "'2' to view the status of all packages, \n"
                          " '3' to view total miles by all trucks, \n"
                          "  or 'q' to quit the program:  ")
+
+        if response == 'q':
+            break
+
+        # run do-while loop until user inputs valid time format
+        while True:
+            print('Input time to view status in HH:MM AM/PM format:  ')
+            time = input()
+            time_format = '%I:%M %p'
+            if validate_time(time, time_format):
+                current_time_obj = time_obj(time)
+                break
+            else:
+                print('Invalid time format.')
+
         if response == '1':
             # run do-while loop until user inputs valid package ID
             print('Please input the package ID: ')
@@ -82,39 +97,16 @@ def user_interface( trucks):
             pkg_truck_id = pkg_obj.truck_id
             truck_obj = truck_hash_table.lookup(pkg_truck_id)
 
-            # run do-while loop until user inputs valid time format
-            while True:
-                print('Input time to view status in HH:MM AM/PM format:  ')
-                time = input()
-                time_format = '%I:%M %p'
-                if validate_time(time, time_format):
-                    current_time_obj = time_obj(time)
-                    break
-                else:
-                    print('Invalid time format.')
-
+            # determine package status by calculating delivery time and comparing it to input time
             status = calculate_package_status(truck_obj,pkg_obj,current_time_obj)
             time_str = current_time_obj.strftime('%I:%M %p')
             print('At %s, package %s status: %s' % (time_str, pkg_obj.package_id, status))
         elif response == '2':
-            # run do-while loop until user inputs valid time format
-            while True:
-                print('Input time to view status in HH:MM AM/PM format:  ')
-                time = input()
-                time_format = '%I:%M %p'
-                if validate_time(time, time_format):
-                    current_time_obj = time_obj(time)
-                    break
-                else:
-                    print('Invalid time format.')
             # display status of all packages in each truck
             display_all_statuses(trucks, current_time_obj)
         elif response == '3':
             # display mileage of each truck and total mileage
             display_all_mileage(trucks)
-        elif response == 'q':
-            # break loop and quit program
-            break
         else:
             print('Invalid input. Try again.')
         print('---------------------------------------------------------------')
