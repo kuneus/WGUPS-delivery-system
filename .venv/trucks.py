@@ -27,3 +27,13 @@ class Truck:
         self.current_time = calculate_time(self.current_time, float(find_distance(0, current_address_index)), self.speed)
 
 truck_hash_table = HashTable()
+
+# instantiate trucks
+truck_1 = Truck(1, '08:00 AM')
+truck_2 = Truck(2, '09:05 AM')
+truck_3 = Truck(3, '10:00 AM')
+trucks = [truck_1, truck_2, truck_3]
+
+# add trucks to hash table
+for truck in trucks:
+    truck_hash_table.insert(truck.truck_id, truck)
