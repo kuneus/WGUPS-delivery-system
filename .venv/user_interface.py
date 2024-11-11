@@ -72,7 +72,8 @@ def display_single_package(time_obj):
 def display_all_statuses(trucks, time_input):
     time_str = time_input.strftime('%I:%M %p')
     for truck in trucks:
-        print('--------------------- Truck %s Status Info at %s---------------------' % (truck.truck_id, time_str))
+        print()
+        print('          Truck %s Status Info at %s          ' % (truck.truck_id, time_str))
         print('TIME      | PACKAGE ID | STATUS     | DELIVERY TIME')
         for pkg in truck.to_deliver:
             print_output_line(truck, pkg, time_input)
