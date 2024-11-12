@@ -30,7 +30,6 @@ class Truck:
     def get_info(self, time):
         current_address = '4001 South 700 East'
         current_miles = 0
-        current_time = self.depart_time
 
         # iterate through each address and set the last address as current address
         for pkg in self.to_deliver:
