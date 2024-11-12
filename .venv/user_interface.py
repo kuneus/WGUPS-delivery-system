@@ -54,24 +54,46 @@ def print_output_line(truck_obj, pkg_obj, time_obj, truck_info=False):
         print('%s  | %s         | %s| %s      | %s' % (input_time_str, fixed_pkg_id, status,
                                              pkg_obj.delivered_at.strftime('%I:%M %p'), pkg_obj.truck_id))
 
-# display status of a single package
+# display status of a single package or specific packages
 def display_single_package(time_obj):
+    print('Please input the package ID or multiple IDs separated by commas: ')
+
     # run do-while loop until user inputs valid package ID
-    print('Please input the package ID: ')
     while True:
         package_id = input()
-        pkg_obj = package_hash_table.lookup(package_id)
-        if pkg_obj:
+
+        #  split into a list of IDs
+        package_ids = package_id.split(',')
+        # keep track of valid and invalid inputs
+        valid_list = []
+        invalid_list = []
+
+        # check each input and separate into valid and invalid IDs
+        for single_id in package_ids:
+            # remove any white space
+            single_id = single_id.strip()
+            # find if package id exists
+            pkg_obj = package_hash_table.lookup(single_id)
+            if pkg_obj:
+                valid_list.append(pkg_obj)
+            else:
+                invalid_list.append(single_id)
+
+        # exit loop if no invalid inputs
+        if len(invalid_list) == 0:
             break
         else:
-            print('Invalid package ID. Please try again with a valid package ID.')
-
-    # find which truck the package will be delivered in
-    pkg_truck_id = pkg_obj.truck_id
-    truck_obj = truck_hash_table.lookup(pkg_truck_id)
+        # List invalid inputs and enter loop again
+            invalid_str_list = ','.join(invalid_list)
+            print('Invalid package ID: %s. Please try again with a valid package ID.' % invalid_str_list)
 
     print('TIME      | PACKAGE ID | STATUS     | DELIVERY TIME | TRUCK ID')
-    print_output_line(truck_obj, pkg_obj, time_obj, True)
+    for pkg_obj in valid_list:
+        # find which truck the package will be delivered in
+        pkg_truck_id = pkg_obj.truck_id
+        truck_obj = truck_hash_table.lookup(pkg_truck_id)
+        # print status of each package input
+        print_output_line(truck_obj, pkg_obj, time_obj, True)
 
 # display status of all packages in each truck
 def display_all_statuses(trucks, time_input):
@@ -137,3 +159,9 @@ def user_interface( trucks):
         print('---------------------------------------------------------------')
         # END WHILE LOOP
     print('Exiting program')
+
+
+sample = ['1','2','3']
+str_sample = ",".join(sample)
+if len(sample) > 0:
+    print('Invalid samples: %s. Please try again.' % str_sample)
