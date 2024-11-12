@@ -159,9 +159,3 @@ def user_interface( trucks):
         print('---------------------------------------------------------------')
         # END WHILE LOOP
     print('Exiting program')
-
-
-sample = ['1','2','3']
-str_sample = ",".join(sample)
-if len(sample) > 0:
-    print('Invalid samples: %s. Please try again.' % str_sample)
