@@ -39,15 +39,20 @@ def fixed_id_length(pkg_id):
         return pkg_id + ' '
     return pkg_id
 
-def print_output_line(truck_obj, pkg_obj, time_obj):
+def print_output_line(truck_obj, pkg_obj, time_obj, truck_info=False):
     # determine package status by calculating delivery time and comparing it to input time
     status = calculate_package_status(truck_obj, pkg_obj, time_obj)
     # set fixed length strings for status and package id
     status = fixed_status_length(status)
     fixed_pkg_id = fixed_id_length(pkg_obj.package_id)
     input_time_str = time_obj.strftime('%I:%M %p')
-    print('%s  | %s         | %s| %s' % (input_time_str, fixed_pkg_id, status,
+    if not truck_info:
+        print('%s  | %s         | %s| %s' % (input_time_str, fixed_pkg_id, status,
                                                     pkg_obj.delivered_at.strftime('%I:%M %p')))
+    else:
+        # add truck ID if requested in arguments
+        print('%s  | %s         | %s| %s      | %s' % (input_time_str, fixed_pkg_id, status,
+                                             pkg_obj.delivered_at.strftime('%I:%M %p'), pkg_obj.truck_id))
 
 # display status of a single package
 def display_single_package(time_obj):
@@ -65,8 +70,8 @@ def display_single_package(time_obj):
     pkg_truck_id = pkg_obj.truck_id
     truck_obj = truck_hash_table.lookup(pkg_truck_id)
 
-    print('TIME      | PACKAGE ID | STATUS     | DELIVERY TIME')
-    print_output_line(truck_obj, pkg_obj, time_obj)
+    print('TIME      | PACKAGE ID | STATUS     | DELIVERY TIME | TRUCK ID')
+    print_output_line(truck_obj, pkg_obj, time_obj, True)
 
 # display status of all packages in each truck
 def display_all_statuses(trucks, time_input):
