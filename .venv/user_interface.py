@@ -13,46 +13,30 @@ def validate_time(time_str, time_format):
 
 # determine status of package
 def calculate_package_status(truck_obj, pkg_obj, time_input):
+    # if time is later than delivery time
     if time_input >= pkg_obj.delivered_at:
         pkg_obj.status = 'Delivered'
+    # if time is later than depart time but before delivery time
     elif time_input >= truck_obj.depart_time:
         pkg_obj.status = 'En route'
     else:
+    # if time is before depart time
         pkg_obj.status = 'At hub'
     return pkg_obj.status
-
-# return status string with fixed length for formatting purposes
-def fixed_status_length(word):
-    match word:
-        case 'En route':
-            return word + '   '
-        case 'Delivered':
-            return word + '  '
-        case 'At hub':
-            return word + '     '
-        case _:
-            return 'Error determining status'
-
-# return package id with fixed length of 2 for formatting purposes
-def fixed_id_length(pkg_id):
-    if int(pkg_id) < 10:
-        return pkg_id + ' '
-    return pkg_id
 
 def print_output_line(truck_obj, pkg_obj, time_obj, truck_info=False):
     # determine package status by calculating delivery time and comparing it to input time
     status = calculate_package_status(truck_obj, pkg_obj, time_obj)
-    # set fixed length strings for status and package id
-    status = fixed_status_length(status)
-    fixed_pkg_id = fixed_id_length(pkg_obj.package_id)
+    # change time to string format
     input_time_str = time_obj.strftime('%I:%M %p')
+
     if not truck_info:
-        print('%s  | %s         | %s| %s' % (input_time_str, fixed_pkg_id, status,
+        print('%s| %s| %s| %s' % (input_time_str.ljust(10), pkg_obj.package_id.ljust(11), status.ljust(11),
                                                     pkg_obj.delivered_at.strftime('%I:%M %p')))
     else:
         # add truck ID if requested in arguments
-        print('%s  | %s         | %s| %s      | %s' % (input_time_str, fixed_pkg_id, status,
-                                             pkg_obj.delivered_at.strftime('%I:%M %p'), pkg_obj.truck_id))
+        print('%s| %s| %s| %s| %s' % (input_time_str.ljust(10), pkg_obj.package_id.ljust(11), status.ljust(11),
+                                             pkg_obj.delivered_at.strftime('%I:%M %p').ljust(14), pkg_obj.truck_id))
 
 # display status of a single package or specific packages
 def display_single_package(time_obj):
@@ -87,7 +71,8 @@ def display_single_package(time_obj):
             invalid_str_list = ','.join(invalid_list)
             print('Invalid package ID: %s. Please try again with a valid package ID.' % invalid_str_list)
 
-    print('TIME      | PACKAGE ID | STATUS     | DELIVERY TIME | TRUCK ID')
+    # print header
+    print('%s| PACKAGE ID | %s| DELIVERY TIME | TRUCK ID' % ('TIME'.ljust(10), 'STATUS'.ljust(11)))
     for pkg_obj in valid_list:
         # find which truck the package will be delivered in
         pkg_truck_id = pkg_obj.truck_id
@@ -101,19 +86,39 @@ def display_all_statuses(trucks, time_input):
     for truck in trucks:
         print()
         print('          Truck %s Status Info at %s          ' % (truck.truck_id, time_str))
-        print('TIME      | PACKAGE ID | STATUS     | DELIVERY TIME')
+        print('%s| %s| %s| DELIVERY TIME' % ('TIME'.ljust(10), 'PACKAGE ID'.ljust(11), 'STATUS'.ljust(11)))
         for pkg in truck.to_deliver:
             print_output_line(truck, pkg, time_input)
 
 # find miles for each truck and calculate and display all miles
-def display_all_mileage(trucks):
+def display_all_mileage(trucks, time_input):
     total_miles = 0
-    print('TRUCK ID | MILES')
+    alt_miles = 0
+    # print header with fixed length strings
+    print('%s| %s| %s| %s| PACKAGES' % ('TRUCK ID'.ljust(9), 'DEPART TIME'.ljust(12), 'CURRENT MILES'.ljust(14),
+                                        'CURRENT LOCATION'.ljust(40)))
     for truck in trucks:
-        truck_id_str = fixed_id_length(str(truck.truck_id))
-        total_miles += round(truck.miles, 2)
-        print('%s       | %.1f' % (truck_id_str, truck.miles))
-    print('TOTAL    | %.1f' % total_miles)
+        # # calculate total miles from all trucks
+        # total_miles += round(truck.miles, 2)
+
+        # get truck info
+        truck_depart_time = truck.depart_time.strftime('%I:%M %p')
+        truck_info = truck.get_info(time_input)
+        current_miles = round(truck_info[0], 2)
+
+        # calculate total miles from all trucks
+        total_miles += round(current_miles, 2)
+        alt_miles += round(truck.miles, 2)
+
+        current_address = truck_info[1]
+        truck_package_ids = truck.get_packages()
+
+        # print output with fixed length strings
+        print('%s| %s| %s| %s| %s' % (str(truck.truck_id).ljust(9), truck_depart_time.ljust(12),
+                                      str(current_miles).ljust(14), current_address.ljust(40), truck_package_ids))
+
+    print('TOTAL    | %.1f miles' % total_miles)
+    print('ALT MILES: %.1f ' % alt_miles)
 
 def user_interface( trucks):
     # welcome message
@@ -123,11 +128,13 @@ def user_interface( trucks):
 
     # run loop of user interface program until user quits
     while True:
-        response = input("Please input one of the following options: \n"
+        print("Please input one of the following options: \n"
                          " '1' to view the status of a specific package, \n "
                          "'2' to view the status of all packages, \n"
                          " '3' to view total miles by all trucks, \n"
                          "  or 'q' to quit the program:  ")
+
+        response = input()
 
         # quit program
         if response == 'q':
@@ -135,7 +142,7 @@ def user_interface( trucks):
 
         current_time_obj = None
         # run do-while loop until user inputs valid time format
-        while response == '1' or response == '2':
+        while response == '1' or '2' or '3':
             print('Input time to view status in HH:MM AM/PM format:  ')
             time = input()
             time_format = '%I:%M %p'
@@ -153,7 +160,7 @@ def user_interface( trucks):
             display_all_statuses(trucks, current_time_obj)
         elif response == '3':
             # display mileage of each truck and total mileage
-            display_all_mileage(trucks)
+            display_all_mileage(trucks, current_time_obj)
         else:
             print('Invalid input. Try again.')
         print('---------------------------------------------------------------')
