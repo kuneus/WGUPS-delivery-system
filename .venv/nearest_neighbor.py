@@ -27,6 +27,7 @@ def create_route(packages, trucks):
         # set last truck time based on when 1st truck returns
         if truck == trucks[len(trucks) - 1]:
             truck.current_time = trucks[0].current_time
+            truck.depart_time = trucks[0].current_time
 
         # iterate until truck reaches capacity or all remaining packages have been assigned
         while truck.capacity > len(truck.to_deliver) and len(remaining_packages) > 0 :
@@ -79,7 +80,7 @@ def create_route(packages, trucks):
             ## END DELIVERY WHILE LOOP ##
 
         # return truck to hub
-        if truck.truck_id == '1':
+        if truck.truck_id == 1:
             truck.return_to_hub()
         ## END TRUCK FOR LOOP ##
 
