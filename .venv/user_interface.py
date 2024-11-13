@@ -108,7 +108,6 @@ def display_all_mileage(trucks, time_input):
 
         # calculate total miles from all trucks
         total_miles += round(current_miles, 2)
-        alt_miles += round(truck.miles, 2)
 
         current_address = truck_info[1]
         truck_package_ids = truck.get_packages()
@@ -118,7 +117,6 @@ def display_all_mileage(trucks, time_input):
                                       str(current_miles).ljust(14), current_address.ljust(40), truck_package_ids))
 
     print('TOTAL    | %.1f miles' % total_miles)
-    print('ALT MILES: %.1f ' % alt_miles)
 
 def user_interface( trucks):
     # welcome message
