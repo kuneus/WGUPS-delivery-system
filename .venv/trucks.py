@@ -45,6 +45,12 @@ class Truck:
             # update current address
             current_address = pkg.address
 
+        # update current address and miles if it's the first truck 1 and if it has returned to hub
+        if (self.truck_id == 1 and current_address == self.to_deliver[len(self.to_deliver) - 1].address and
+                time > self.current_time):
+                current_miles = self.miles
+                current_address = self.address
+
         return [current_miles, current_address]
 
     def get_packages(self):
@@ -53,8 +59,6 @@ class Truck:
             package_ids.append(pkg.package_id)
 
         return package_ids
-
-
 
 truck_hash_table = HashTable()
 
