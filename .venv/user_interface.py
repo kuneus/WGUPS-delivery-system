@@ -118,7 +118,7 @@ def display_all_mileage(trucks, time_input):
 
     print('TOTAL    | %.1f miles' % total_miles)
 
-def user_interface( trucks):
+def user_interface(trucks):
     # welcome message
     print('---------------------------------------------------------------')
     print('------------------     Welcome to WGUPS!     ------------------')

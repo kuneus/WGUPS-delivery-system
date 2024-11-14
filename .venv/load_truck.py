@@ -1,18 +1,7 @@
 from distance import *
 from package import *
 from datetime import datetime, timedelta
-from nearest_neighbor import create_route
-
-
-# calculate time based on miles driven
-def calculate_time(current_time, miles, mph):
-    miles_to_hours = float(miles / mph)
-    new_time = current_time + timedelta(hours=miles_to_hours)
-    return new_time
-
-# easier to read format to return time object
-def time_obj(time):
-    return datetime.strptime(time, '%I:%M %p')
+from nearest_neighbor import *
 
 # function to partition packages into the appropriate truck
 def load_trucks(packages, trucks):
@@ -130,10 +119,7 @@ def load_trucks(packages, trucks):
                 special_circumstances.append(pkg)
         # END OUTER LOOP
 
-    # Load remaining packages
-    # use to_load list
-    # first make order for truck's current to_deliver list
-    # then continue from last package with remaining packages
+    # call nearest neighbor algorithm to sort packages into their route order
     create_route(to_load, trucks)
 
 

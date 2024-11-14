@@ -76,7 +76,6 @@ def create_route(packages, trucks):
 
             # finally place package into truck
             truck.to_deliver.append(next_address)
-
             ## END DELIVERY WHILE LOOP ##
 
         # return truck to hub

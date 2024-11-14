@@ -23,7 +23,6 @@ def load_distance_data(file, table):
             table.insert(address[0], index)
             index+=1
 
-
 # find the distance between 2 addresses using their indexes as input
 def find_distance(start_index, destination_index):
     # use indexes to locate in 2d list of distance data

@@ -9,7 +9,8 @@ package_list = []
 package_hash_table = HashTable()
 
 class Package:
-    def __init__(self, package_id, address, city, state, zipcode, due, weight, notes, status, truck_id=1, group_with=None,
+    def __init__(self, package_id, address, city, state, zipcode, due, weight, notes, status, truck_id=1,
+                 group_with=None,
                  delayed=False, wrong_address=False, special_circumstances=False):
         self.package_id = package_id
         self.address = address
@@ -66,7 +67,8 @@ def load_package_data(file, table):
                 group_with.append(int(package_2))
 
             # instantiate package object
-            pkg_obj = Package(package_id, package_address, package_city, package_state, package_zipcode, package_due, package_weight, package_notes, status, truck_id, group_with )
+            pkg_obj = Package(package_id, package_address, package_city, package_state, package_zipcode, package_due,
+                              package_weight, package_notes, status, truck_id, group_with )
 
             # check if must be in truck 2
             if 'truck 2' in pkg_obj.notes:
@@ -80,7 +82,8 @@ def load_package_data(file, table):
                 pkg_obj.wrong_address = True
 
             # check if package has special circumstances: delayed, wrong address, priority, truck 2, or grouped with others
-            if pkg_obj.delayed or pkg_obj.wrong_address or pkg_obj.due < datetime.strptime('05:00 PM', '%I:%M %p') or pkg_obj.truck_id == 2 or len(pkg_obj.group_with) > 0:
+            if pkg_obj.delayed or pkg_obj.wrong_address or pkg_obj.due < datetime.strptime(
+                    '05:00 PM', '%I:%M %p') or pkg_obj.truck_id == 2 or len(pkg_obj.group_with) > 0:
                 pkg_obj.special_circumstances = True
 
             table.insert(package_id, pkg_obj)
