@@ -140,7 +140,7 @@ def user_interface( trucks):
 
         current_time_obj = None
         # run do-while loop until user inputs valid time format
-        while response == '1' or '2' or '3':
+        while response == '1' or response == '2' or response =='3':
             print('Input time to view status in HH:MM AM/PM format:  ')
             time = input()
             time_format = '%I:%M %p'
