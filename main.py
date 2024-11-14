@@ -9,10 +9,10 @@ from user_interface import user_interface
 
 class Main:
     # load packages data
-    load_package_data('./csv/wgups-packages.csv', package_hash_table)
+    load_package_data('csv/wgups-packages.csv', package_hash_table)
 
     # load distance data
-    load_distance_data('./csv/wgpus-distances.csv', address_hash_table)
+    load_distance_data('csv/wgpus-distances.csv', address_hash_table)
 
     # load packages onto trucks
     load_trucks(package_list, trucks)
