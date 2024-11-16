@@ -106,9 +106,6 @@ def display_single_package(time_obj):
             invalid_str_list = ','.join(invalid_list)
             print('Invalid package ID: %s. Please try again with a valid package ID.' % invalid_str_list)
 
-
-    # print header
-    # print('%s| PKG ID | %s| %s| DELIVERY TIME | TRUCK ID' % ('TIME'.ljust(10),'ADDRESS'.ljust(40), 'STATUS'.ljust(11)))
     print_header(True)
     for pkg_obj in valid_list:
         # find which truck the package will be delivered in
@@ -121,9 +118,7 @@ def display_single_package(time_obj):
 def display_all_statuses(trucks, time_input):
     time_str = time_input.strftime('%I:%M %p')
     for truck in trucks:
-        print()
-        print('          Truck %s Status Info at %s          ' % (truck.truck_id, time_str))
-        # print('%s| %s| %s| %s| DELIVERY TIME' % ('TIME'.ljust(10), 'PKG ID'.ljust(7), 'ADDRESS'.ljust(40), 'STATUS'.ljust(11)))
+        print('\n          Truck %s Status Info at %s          ' % (truck.truck_id, time_str))
         print_header()
         for pkg in truck.to_deliver:
             print_output_line(truck, pkg, time_input)
@@ -131,14 +126,11 @@ def display_all_statuses(trucks, time_input):
 # find miles for each truck and calculate and display all miles
 def display_all_mileage(trucks, time_input):
     total_miles = 0
-    alt_miles = 0
+
     # print header with fixed length strings
     print('%s| %s| %s| %s| PACKAGES' % ('TRUCK ID'.ljust(9), 'DEPART TIME'.ljust(12), 'CURRENT MILES'.ljust(14),
                                         'CURRENT LOCATION'.ljust(40)))
     for truck in trucks:
-        # # calculate total miles from all trucks
-        # total_miles += round(truck.miles, 2)
-
         # get truck info
         truck_depart_time = truck.depart_time.strftime('%I:%M %p')
         truck_info = truck.get_info(time_input)
@@ -169,7 +161,6 @@ def user_interface(trucks):
                          "'2' to view the status of all packages, \n"
                          " '3' to view total miles by all trucks, \n"
                          "  or 'q' to quit the program:  ")
-
         response = input()
 
         # quit program
