@@ -24,19 +24,54 @@ def calculate_package_status(truck_obj, pkg_obj, time_input):
         pkg_obj.status = 'At hub'
     return pkg_obj.status
 
+# display heading for options 1 and 2
+def print_header(truck_info=False):
+    # format strings to be fixed length
+    time_fixed = 'TIME'.ljust(9)
+    pkg_id_fixed = 'PKG ID'.ljust(7)
+    address_fixed = 'ADDRESS'.ljust(39)
+    city_fixed = 'CITY'.ljust(17)
+    state_fixed = 'STATE'.ljust(6)
+    zipcode_fixed = 'ZIPCODE'.ljust(8)
+    deadline_fixed = 'DEADLINE'.ljust(9)
+    weight_fixed = 'WEIGHT'.ljust(7)
+    status_fixed = 'STATUS'.ljust(10)
+    delivery_time_fixed = 'DELIVERY TIME'.ljust(14)
+    truck_id_fixed = 'TRUCK ID'.ljust(9)
+
+    if not truck_info:
+        print('%s| %s| %s| %s| %s| %s| %s| %s| %s| %s' % (time_fixed, pkg_id_fixed, address_fixed, city_fixed,
+                                                          state_fixed, zipcode_fixed, deadline_fixed, weight_fixed,
+                                                          status_fixed, delivery_time_fixed))
+    else:
+        print('%s| %s| %s| %s| %s| %s| %s| %s| %s| %s| %s' % (time_fixed, pkg_id_fixed, address_fixed, city_fixed,
+                                                          state_fixed, zipcode_fixed, deadline_fixed, weight_fixed,
+                                                          status_fixed, delivery_time_fixed, truck_id_fixed))
+
 def print_output_line(truck_obj, pkg_obj, time_obj, truck_info=False):
     # determine package status by calculating delivery time and comparing it to input time
     status = calculate_package_status(truck_obj, pkg_obj, time_obj)
     # change time to string format
     input_time_str = time_obj.strftime('%I:%M %p')
 
+    # format string lengths to be fixed
+    time_fixed = input_time_str.ljust(9)
+    pkg_id_fixed = pkg_obj.package_id.ljust(7)
+    address_fixed = pkg_obj.address.ljust(39)
+    city_fixed = pkg_obj.city.ljust(17)
+    state_fixed = pkg_obj.state.ljust(6)
+    zipcode_fixed = pkg_obj.zipcode.ljust(8)
+    deadline_fixed = pkg_obj.due.strftime('%I:%M %p').ljust(9)
+    weight_fixed = pkg_obj.weight.ljust(7)
+    status_fixed = status.ljust(10)
+    delivery_time_fixed = pkg_obj.delivered_at.strftime('%I:%M %p').ljust(14)
+
     if not truck_info:
-        print('%s| %s| %s| %s' % (input_time_str.ljust(10), pkg_obj.package_id.ljust(11), status.ljust(11),
-                                                    pkg_obj.delivered_at.strftime('%I:%M %p')))
+        print('%s| %s| %s| %s| %s| %s| %s| %s| %s| %s' % (time_fixed, pkg_id_fixed, address_fixed, city_fixed, state_fixed, zipcode_fixed, deadline_fixed, weight_fixed, status_fixed, delivery_time_fixed))
     else:
         # add truck ID if requested in arguments
-        print('%s| %s| %s| %s| %s' % (input_time_str.ljust(10), pkg_obj.package_id.ljust(11), status.ljust(11),
-                                             pkg_obj.delivered_at.strftime('%I:%M %p').ljust(14), pkg_obj.truck_id))
+        print('%s| %s| %s| %s| %s| %s| %s| %s| %s| %s| %s' % (time_fixed, pkg_id_fixed, address_fixed, city_fixed, state_fixed, zipcode_fixed, deadline_fixed, weight_fixed, status_fixed, delivery_time_fixed,
+                                          pkg_obj.truck_id))
 
 # display status of a single package or specific packages
 def display_single_package(time_obj):
@@ -71,8 +106,10 @@ def display_single_package(time_obj):
             invalid_str_list = ','.join(invalid_list)
             print('Invalid package ID: %s. Please try again with a valid package ID.' % invalid_str_list)
 
+
     # print header
-    print('%s| PACKAGE ID | %s| DELIVERY TIME | TRUCK ID' % ('TIME'.ljust(10), 'STATUS'.ljust(11)))
+    # print('%s| PKG ID | %s| %s| DELIVERY TIME | TRUCK ID' % ('TIME'.ljust(10),'ADDRESS'.ljust(40), 'STATUS'.ljust(11)))
+    print_header(True)
     for pkg_obj in valid_list:
         # find which truck the package will be delivered in
         pkg_truck_id = pkg_obj.truck_id
@@ -86,7 +123,8 @@ def display_all_statuses(trucks, time_input):
     for truck in trucks:
         print()
         print('          Truck %s Status Info at %s          ' % (truck.truck_id, time_str))
-        print('%s| %s| %s| DELIVERY TIME' % ('TIME'.ljust(10), 'PACKAGE ID'.ljust(11), 'STATUS'.ljust(11)))
+        # print('%s| %s| %s| %s| DELIVERY TIME' % ('TIME'.ljust(10), 'PKG ID'.ljust(7), 'ADDRESS'.ljust(40), 'STATUS'.ljust(11)))
+        print_header()
         for pkg in truck.to_deliver:
             print_output_line(truck, pkg, time_input)
 
