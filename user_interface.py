@@ -57,6 +57,14 @@ def print_output_line(truck_obj, pkg_obj, time_obj, truck_info=False):
     # format string lengths to be fixed
     time_fixed = input_time_str.ljust(9)
     pkg_id_fixed = pkg_obj.package_id.ljust(7)
+
+    # update package 9 address depending on current time input
+    if pkg_obj.package_id == '9':
+        if time_obj < datetime.strptime('10:20 am', '%I:%M %p'):
+            pkg_obj.address = '300 State St'
+        else:
+            pkg_obj.address = '410 S State St'
+
     address_fixed = pkg_obj.address.ljust(39)
     city_fixed = pkg_obj.city.ljust(17)
     state_fixed = pkg_obj.state.ljust(6)

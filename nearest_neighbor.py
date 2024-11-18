@@ -55,7 +55,9 @@ def create_route(packages, trucks):
             # remove package object from list and set as variable
             next_address = current_delivery_list.pop(next_address_index)
 
+            # update if package is wrong address
             if next_address.wrong_address:
+                # change address if after 10:20 am
                 if truck.current_time >= time_obj('10:20 AM'):
                     next_address.address = '410 S State St'
                     next_address.wrong_address = False
