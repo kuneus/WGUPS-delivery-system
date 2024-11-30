@@ -1,4 +1,4 @@
 # Distribution/packaging
-/lib
-/bin
-/__*
+.venv/*
+.DS_Store
+__*
